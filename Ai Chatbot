@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+string toLower(const string& str) {
+    string result = str;
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+bool contains(const string& str, const string& substring) {
+    return str.find(substring) != string::npos;
+}
+
+string analyzeSentiment(const string& userResponse) {
+    string lowerResponse = toLower(userResponse);
+    if (contains(lowerResponse, "good") || contains(lowerResponse, "great") ||
+        contains(lowerResponse, "happy") || contains(lowerResponse, "well") ||
+        contains(lowerResponse, "fine")) {
+        return "positive";
+    } 
+	else if (contains(lowerResponse, "bad") || contains(lowerResponse, "sad") ||
+             contains(lowerResponse, "not good") || contains(lowerResponse, "not well")) {
+        return "negative";
+    } 
+	else {
+        return "neutral";
+    }
+}
+
+int main() {
+    string userInput;
+    cout << "Chatbot: Hello! How can I assist you today?" << endl;
+
+    while (true) {
+        cout << "You: ";
+        getline(cin, userInput);
+        string lowerInput = toLower(userInput);
+
+        if (contains(lowerInput, "hello") || contains(lowerInput, "hi")) 
+		{
+            cout << "Chatbot: Hi there! How can I help?" << endl;
+        } 
+		else if (contains(lowerInput, "how are you")) {
+            cout << "Chatbot: I'm just a program, but I'm doing well. What about you?" << endl;
+            cout << "You: ";
+            getline(cin, userInput);
+            string userResponse = toLower(userInput);
+            string sentiment = analyzeSentiment(userResponse);
+
+            if (sentiment == "positive") {
+                cout << "Chatbot: That's great! I'm glad to hear that." << endl;
+            }
+			 else if (sentiment == "negative") {
+                cout << "Chatbot: I'm sorry to hear that. Is there anything I can do to help?" << endl;
+            } 
+			else {
+                cout << "Chatbot: I appreciate your response." << endl;
+            }
+        }
+		else if (contains(lowerInput, "bye")) {
+            cout << "Chatbot: Goodbye! Have a nice day!" << endl;
+            break;
+        } 
+		else {
+            cout << "Chatbot: I'm sorry, I didn't understand that. Can you please rephrase?" << endl;
+        }
+    }
+
+    return 0;
+}
